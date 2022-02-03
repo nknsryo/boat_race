@@ -50,22 +50,22 @@ def first():
 
 # 2着率のリストを作る
 def second():
-    ittyaku = []
+    nittyaku = []
 
     ittyaku_ritsu = driver.find_element(By.XPATH,
-                                        "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
+                                        "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[6]/td").text
 
     time.sleep(3)
 
-    ittyaku.append(ittyaku_ritsu)
+    nittyaku.append(ittyaku_ritsu)
 
     time.sleep(1)
     for count_up in range(6):
         first = driver.find_element(By.XPATH,
-                                    f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[{count_up + 2}]").text
-        ittyaku.append(first)
+                                    f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[9]/td[{count_up + 2}]").text
+        nittyaku.append(first)
 
-    print(ittyaku)
+    print(nittyaku)
 
     time.sleep(1)
 
