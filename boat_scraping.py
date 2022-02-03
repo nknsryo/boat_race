@@ -24,9 +24,6 @@ def chromedriver_options():
 def main():
     chromedriver_options()
 
-    data_place = []
-    # data_placeはlistだよ！
-
     # driver = webdriver.Chrome(options=chromedriver_options())
     driver = webdriver.Chrome()
 
@@ -38,42 +35,64 @@ def main():
 
     driver.implicitly_wait(5)
 
-    one = driver.find_element(By.XPATH, "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
+    # 1着率のリスト
+    ittyaku = []
+
+    ittyaku_ritsu = driver.find_element(By.XPATH,
+                                        "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
 
     time.sleep(3)
 
-    data_place.append(one)
+    ittyaku.append(ittyaku_ritsu)
+
+    time.sleep(1)
+    for count_up in range(6):
+        first = driver.find_element(By.XPATH,
+                                    f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[{count_up + 2}]").text
+        ittyaku.append(first)
+
+    print(ittyaku)
 
     time.sleep(1)
 
-    a = driver.find_element(By.XPATH,
-                            "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[2]").text
-    data_place.append(a)
+    # 2着率のリスト
+    nittyaku = []
 
-    b = driver.find_element(By.XPATH,
-                            "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[3]").text
-    data_place.append(b)
+    nittyaku_ritsu = driver.find_element(By.XPATH,
+                                         "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[6]/td").text
 
-    c = driver.find_element(By.XPATH,
-                            "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[4]").text
-    data_place.append(c)
+    time.sleep(3)
 
-    d = driver.find_element(By.XPATH,
-                            "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[5]").text
-    data_place.append(d)
-
-    e = driver.find_element(By.XPATH,
-                            "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[6]").text
-    data_place.append(e)
-
-    f = driver.find_element(By.XPATH,
-                            "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[7]").text
-    data_place.append(f)
-    # 48~70 forでまとめる
+    nittyaku.append(nittyaku_ritsu)
 
     time.sleep(1)
+    for count_up_2 in range(6):
+        second = driver.find_element(By.XPATH,
+                                     f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[9]/td[{count_up_2 + 2}]").text
+        nittyaku.append(second)
 
-    print(data_place)
+    print(nittyaku)
+
+    # 決まり手
+    kimarite = []
+
+    nige_ritsu = driver.find_element(By.XPATH,
+                                     "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[26]/td").text
+
+    time.sleep(3)
+
+    kimarite.append(nige_ritsu)
+
+    time.sleep(1)
+    kimarite_1 = driver.find_element(By.XPATH,
+                                     f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[29]/td[1]").text
+    kimarite.append(kimarite_1)
+
+    kimarite_2 = driver.find_element(By.XPATH,
+                                     f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[40]/td[2]").text
+    kimarite.append(kimarite_2)
+
+    print(kimarite)
 
     driver.close()
 
