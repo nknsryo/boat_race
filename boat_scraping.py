@@ -18,50 +18,60 @@ driver = webdriver.Chrome()
 
 def main():
     driver.get("https://kyoteibiyori.com/")
-    # 1番目の開催場(桐生)のアイコン
-    hold_place = driver.find_element(By.XPATH, f"/html/body/div[3]/div/section[1]/div[2]/ul/li[1]/a/div[1]")
-    # 1番目の開催場の名前をテキスト化する
-    hold_place_name = driver.find_element(By.XPATH, f"/html/body/div[3]/div/section[1]/div[2]/ul/li[1]/a/div[1]").text
-    hold_place.click()
-    # 1R目の枠別勝率をクリック
-    driver.find_element(By.XPATH, f"/html/body/div[5]/div[1]/section/div[3]/div[2]/table/tbody/tr[1]/td[2]/a").click()
-    driver.implicitly_wait(10)
-    driver.find_element(By.ID, "wakubetsu2").click()
+    for hold_place_number in range(24):
+        # 1番目の開催場(桐生)のアイコン
+        hold_place = driver.find_element(By.XPATH,
+                                         f"/html/body/div[3]/div/section[1]/div[2]/ul/li[{hold_place_number}+1]")
 
-    driver.implicitly_wait(5)
+        hold_place_name = driver.find_element(By.XPATH,
+                                              f"/html/body/div[3]/div/section[1]/div[2]/ul/li[{hold_place_number}+1]").text
+        # 1番目の開催場の名前をテキスト化する
+        x = "出走なし"
 
-    race_list = []
-    for number in range(12):
-        race_number = number + 1
-        race_list.append(hold_place)
-        race_list.append(race_number)
+        if x in hold_place_name:
+            pass
+        else:
+            hold_place.click()
+            # 1R目の枠別勝率をクリック
+            driver.find_element(By.XPATH,
+                                f"/html/body/div[5]/div[1]/section/div[3]/div[2]/table/tbody/tr[1]/td[2]/a").click()
+            driver.implicitly_wait(5)
+            driver.find_element(By.ID, "wakubetsu2").click()
+            driver.implicitly_wait(5)
 
-        # 1着率のリスト
+            race_list = []
+            for number in range(12):
+                race_number = number + 1
 
-        first_place = driver.find_element(By.XPATH,
-                                          "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
-        race_list.append(first_place)
+                race_list.append(hold_place_name)
+                race_list.append(race_number)
 
-        for count_up in range(6):
-            first_place_player_each = driver.find_element(By.XPATH,
-                                                          f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[{count_up + 2}]").text
-            race_list.append(first_place_player_each)
+                # 1着率のリスト
 
-            time.sleep(1)
+                first_place = driver.find_element(By.XPATH,
+                                                  "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
+                race_list.append(first_place)
 
-            # 2着率のリスト
+            for count_up_1 in range(6):
+                first_place_player_each = driver.find_element(By.XPATH,
+                                                              f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[{count_up_1 + 2}]").text
+                race_list.append(first_place_player_each)
 
-            second_place = driver.find_element(By.XPATH,
-                                               "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[6]/td").text
-            race_list.append(second_place)
+                time.sleep(1)
 
-            time.sleep(1)
+                # 2着率のリスト
 
-            for count_up in range(6):
+                second_place = driver.find_element(By.XPATH,
+                                                   "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[6]/td").text
+                race_list.append(second_place)
+
+                time.sleep(1)
+
+            for count_up_2 in range(6):
                 second_place_player_each = driver.find_element(By.XPATH,
                                                                f"/html/body/div[8]/div[1]/section/"
                                                                f"div[5]/table[1]/tbody/tr[9]/td"
-                                                               f"[{count_up + 2}]").text
+                                                               f"[{count_up_2 + 2}]").text
                 race_list.append(second_place_player_each)
 
                 time.sleep(1)
@@ -80,7 +90,7 @@ def main():
                                                  f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[40]/td[2]").text
                 race_list.append(kimarite_2)
 
-        print(race_list)
+            print(race_list)
 
     driver.close()
 
