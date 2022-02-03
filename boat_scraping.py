@@ -22,14 +22,14 @@ def chromedriver_options():
 
 
 def main():
-    chromedriver_options()
+    # chromedriver_options()
 
     # driver = webdriver.Chrome(options=chromedriver_options())
     driver = webdriver.Chrome()
 
-    driver.get("https://kyoteibiyori.com/race_shusso.php?place_no=1&race_no=1&hiduke=20220203&slider=1")
-
+    driver.get(f"https://kyoteibiyori.com/race_shusso.php?place_no=1&race_no=1&hiduke=20220203&slider=1")
     driver.implicitly_wait(10)
+
 
     driver.find_element(By.ID, "wakubetsu2").click()
 
@@ -53,9 +53,11 @@ def main():
 
     print(ittyaku)
 
+
+k
     time.sleep(1)
 
-    # 2着率のリスト
+# 2着率のリスト
     nittyaku = []
 
     nittyaku_ritsu = driver.find_element(By.XPATH,
@@ -73,7 +75,7 @@ def main():
 
     print(nittyaku)
 
-    # 決まり手
+# 決まり手
     kimarite = []
 
     nige_ritsu = driver.find_element(By.XPATH,
