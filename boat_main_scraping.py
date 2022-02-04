@@ -14,17 +14,19 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 
-# def chromedriver_options():
-#     # オプション設定
-#     options = webdriver.ChromeOptions()
-#     # options.add_argument('--headless')  # ヘッドレスモード
-#     return options
+def chromedriver_options():
+    # オプション設定
+    options = webdriver.ChromeOptions()
+
+    options.add_argument('--headless')
+    options.add_argument("--window-size=1280,1280")
+    return options
 
 
 def main():
-    # chromedriver_options()
-    # driver = webdriver.Chrome(options=chromedriver_options())
-    driver = webdriver.Chrome()
+    chromedriver_options()
+    driver = webdriver.Chrome(options=chromedriver_options())
+    # driver = webdriver.Chrome()
     for place_number in range(1, 25):
         race_info = []
         driver.get("https://kyoteibiyori.com/")

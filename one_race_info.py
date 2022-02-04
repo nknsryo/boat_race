@@ -13,7 +13,18 @@ from selenium.webdriver.common.by import By
 # noinspection PyUnresolvedReferences
 from selenium.webdriver.common.keys import Keys
 
-driver = webdriver.Chrome()
+
+def chromedriver_options():
+    # オプション設定
+    options = webdriver.ChromeOptions()
+
+    options.add_argument('--headless')
+    options.add_argument("--window-size=1280,1280")
+    return options
+
+
+# driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=chromedriver_options())
 
 
 def main():
