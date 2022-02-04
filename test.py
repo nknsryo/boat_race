@@ -24,102 +24,108 @@ from selenium.webdriver.common.keys import Keys
 def main():
     # chromedriver_options()
     # driver = webdriver.Chrome(options=chromedriver_options())
-    race_info = []
     driver = webdriver.Chrome()
     for place_number in range(1, 25):
-        race_place = driver.find_element(By.XPATH,
-                                         f"/html/body/div[4]/div/section[1]/div[2]/ul/li[{place_number}]")
+        race_info = []
+        driver.get("https://kyoteibiyori.com/")
         race_place_text = driver.find_element(By.XPATH,
                                               f"/html/body/div[4]/div/section[1]/div[2]/ul/li[{place_number}]").text
         x = "出走なし"
         if x in race_place_text:
-            continue
+            pass
+            # continue
         else:
             place_name = driver.find_element(By.XPATH, f"/html/body/div[4]/div/section[1]/div[2]/ul/"
                                                        f"li[{place_number}]/a/div[1]").text
+            place_name_button = driver.find_element(By.XPATH, f"/html/body/div[4]/div/section[1]/div[2]/ul/"
+                                                              f"li[{place_number}]/a/div[1]")
             race_info.append(place_name)
-            race_info.append(place_number)
+            place_name_button.click()
+            driver.implicitly_wait(4)
+            driver.find_element(By.XPATH,
+                                "/html/body/div[5]/div[1]/section/div[3]/div[2]/table/tbody/tr[1]/td[2]").click()
+            driver.implicitly_wait(4)
+            for race_number in range(1, 13):
+                driver.find_element(By.ID, "wakubetsu2").click()
+                driver.implicitly_wait(1)
+                first_win_rate = driver.find_element(By.XPATH, f"").text
+                driver.find_element(By.XPATH, f"").text
+                driver.find_element(By.XPATH, f"").text
+                driver.find_element(By.XPATH, f"").text
+                driver.find_element(By.XPATH, f"").text
 
-        for race_number in range(1, 13):
-            driver.find_element(By.ID, "wakubetsu2").click()
-            driver.implicitly_wait(5)
+                driver.implicitly_wait(5)
 
-            driver.implicitly_wait(10)
+                # レース番号
+                race_number = driver.find_element(By.XPATH,
+                                                  "/html/body/div[8]/div[1]/section/div[2]/table/tbody/tr[1]/td[1]").text
 
-            driver.find_element(By.ID, "wakubetsu2").click()
+                # 1着率のリスト
+                ittyaku = []
 
-            driver.implicitly_wait(5)
+                ittyaku_ritsu = driver.find_element(By.XPATH,
+                                                    "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
 
-            # レース番号
-            race_number = driver.find_element(By.XPATH,
-                                              "/html/body/div[8]/div[1]/section/div[2]/table/tbody/tr[1]/td[1]").text
+                time.sleep(3)
+                ittyaku.append(race_number)
+                ittyaku.append(ittyaku_ritsu)
 
-            # 1着率のリスト
-            ittyaku = []
+                time.sleep(1)
+                for count_up in range(6):
+                    first = driver.find_element(By.XPATH,
+                                                f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[{count_up + 2}]").text
+                    ittyaku.append(first)
 
-            ittyaku_ritsu = driver.find_element(By.XPATH,
-                                                "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
+                print(ittyaku)
 
-            time.sleep(3)
-            ittyaku.append(race_number)
-            ittyaku.append(ittyaku_ritsu)
+                time.sleep(1)
 
-            time.sleep(1)
-            for count_up in range(6):
-                first = driver.find_element(By.XPATH,
-                                            f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[4]/td[{count_up + 2}]").text
-                ittyaku.append(first)
+                # 2着率のリスト
+                nittyaku = []
 
-            print(ittyaku)
+                nittyaku_ritsu = driver.find_element(By.XPATH,
+                                                     "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[6]/td").text
 
-            time.sleep(1)
+                time.sleep(3)
 
-            # 2着率のリスト
-            nittyaku = []
+                nittyaku.append(nittyaku_ritsu)
 
-            nittyaku_ritsu = driver.find_element(By.XPATH,
-                                                 "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[6]/td").text
+                time.sleep(1)
+                for count_up_2 in range(6):
+                    second = driver.find_element(By.XPATH,
+                                                 f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[9]/td[{count_up_2 + 2}]").text
+                    nittyaku.append(second)
 
-            time.sleep(3)
+                print(nittyaku)
 
-            nittyaku.append(nittyaku_ritsu)
+                # 決まり手
+                kimarite = []
 
-            time.sleep(1)
-            for count_up_2 in range(6):
-                second = driver.find_element(By.XPATH,
-                                             f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[9]/td[{count_up_2 + 2}]").text
-                nittyaku.append(second)
+                nige_ritsu = driver.find_element(By.XPATH,
+                                                 "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[26]/td").text
 
-            print(nittyaku)
+                time.sleep(3)
 
-            # 決まり手
-            kimarite = []
+                kimarite.append(nige_ritsu)
 
-            nige_ritsu = driver.find_element(By.XPATH,
-                                             "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[26]/td").text
+                time.sleep(1)
+                kimarite_1 = driver.find_element(By.XPATH,
+                                                 f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[29]/td[1]").text
+                kimarite.append(kimarite_1)
 
-            time.sleep(3)
+                kimarite_2 = driver.find_element(By.XPATH,
+                                                 f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[40]/td[2]").text
+                kimarite.append(kimarite_2)
 
-            kimarite.append(nige_ritsu)
+                print(kimarite)
 
-            time.sleep(1)
-            kimarite_1 = driver.find_element(By.XPATH,
-                                             f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[29]/td[1]").text
-            kimarite.append(kimarite_1)
+                one_race_data = []
+                one_race_data.append(ittyaku)
+                one_race_data.append(nittyaku)
+                one_race_data.append(kimarite)
+                print(list(one_race_data))
 
-            kimarite_2 = driver.find_element(By.XPATH,
-                                             f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[40]/td[2]").text
-            kimarite.append(kimarite_2)
-
-            print(kimarite)
-
-            one_race_data = []
-            one_race_data.append(ittyaku)
-            one_race_data.append(nittyaku)
-            one_race_data.append(kimarite)
-            print(list(one_race_data))
-
-            driver.close()
+                driver.close()
 
 
 if __name__ == '__main__':
