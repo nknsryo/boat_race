@@ -18,7 +18,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 def csv_method(race_info):
     with open("test_02.csv", 'r+') as f:
         f.truncate(0)
@@ -72,31 +71,27 @@ def chromedriver_options():
     pass
 
 
-def main():
+def scraping_register_data():
+    load_dotenv()
     driver = webdriver.Chrome(options=chromedriver_options())
+
     # driver = webdriver.Chrome()
 
-    # init_dbのこと
-    dsn = os.environ.get('DATABASE_URL')
-    connection = psycopg2.connect(dsn)
+    # test.csvのフォルダ内を空にする
+    with open("test.csv", 'r+') as f:
+        f.truncate(0)
 
-    cursor = connection.cursor()
-
-    with open('schema.sql', encoding='utf-8_sig') as f:
-        cursor.execute(f.read())
-
-    connection.commit()
-
-    connection.close()
-    # ここまで
+    init_db()
 
     # 24レース場からデータを取得してくる
     for race_place in range(1, 25):
         time.sleep(3)
+        # ボートレース日和の当日のトップページを表示
         driver.get(f"https://kyoteibiyori.com/index.php?hiduke={date()}")
         driver.implicitly_wait(20)
         x = "中止"
         y = "出走なし"
+        # 開催場名をテキスト情報として取得
         race_place_text = driver.find_element(By.XPATH,
                                               f"/html/body/div[4]/div/section[1]/div[2]/ul/li[{race_place}]").text
         # "中止"という文字が入っているかどうか
@@ -104,99 +99,246 @@ def main():
         # "出走なし"という文字が入っているかどうか
         none_race = y in race_place_text
         if stop_race:
+            # "中止"という文字が入っていたら処理をとばす
             continue
         elif none_race:
+            # "出走なし"という文字が入っていたら処理をとばす
             continue
         else:
+            # それ以外の条件の時に情報を取得できるようにする
             place_name = driver.find_element(By.XPATH,
-                                             f"/html/body/div[4]/div/section[1]/div[2]/"
-                                             f"ul/li[{race_place}]/a/div[1]").text
+                                             f"/html/body/div[4]/div/section[1]/div[2]/ul/li[{race_place}]/a/div[1]").text
             # 1~12レースの情報を回す。
         for race_number in range(1, 13):
-            race_info = []
-            race_info.append(date())
-            race_info.append(place_name)
-            time.sleep(2)
+            # それぞれの開催場の枠別情報のページを表示
             driver.get(f"https://kyoteibiyori.com/race_shusso.php?"
                        f"place_no={race_place}&race_no={race_number}&hiduke={date()}&slider=1")
+            time.sleep(2)
             driver.implicitly_wait(5)
+            # 一般戦のボタンをクリック
             driver.find_element(By.XPATH, "/html/body/div[8]/div[1]/section/div[5]/div[1]/div/ul/li[2]").click()
             driver.implicitly_wait(3)
+            race_info = []
+            # スタート時間を取得
+            start_time = driver.find_element(By.XPATH, F"/html/body/div[8]/div[1]/section/div[3]/h2").text
+            start_time = start_time.split("締切")[1]
+            start_time = start_time.split(" ")[0]
+            start_time = start_time.split("\n")[0]
+            # リストに　日付　を追加
+            race_info.append(date())
+            # リストに　開催場　を追加
+            race_info.append(place_name)
+            # リストに　出走時間　を追加
+            race_info.append(start_time)
+            # "1着率"という文字情報を取得
             first_win_rate = driver.find_element(By.XPATH,
                                                  "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
+            # リストに　レース番号　を追加
             race_info.append(f"{race_number}R")
+            # リストに選手名を追加
+            for player_name in range(1, 7):
+                players_name = driver.find_element(By.XPATH,
+                                                   f"/html/body/div[8]/div[1]/section/div[3]/div[2]/table/tbody/"
+                                                   f"tr[3]/td[{player_name}]").text
+                players_name_1 = players_name.split("\n")[0]
+                players_name_2 = players_name.split("\n")[1]
+                players_name = f"{players_name_1} {players_name_2}"
+                race_info.append(players_name)
+
+            # リストに　"1着率"　という文字を追加
             race_info.append(first_win_rate)
-            # 1~6号艇の1着率
+            # 1~6号艇の1着率を取ってくる
             for first_win_rate_player in range(1, 7):
-                first_win_rate_each = driver.find_element(By.XPATH,
-                                                          f"/html/body/div[8]/div[1]/section/div[5]"
-                                                          f"/table[1]/tbody/tr[4]/td[{first_win_rate_player + 1}]").text
-                first_win_rate_each = float(first_win_rate_each.split("%")[0])
-                race_info.append(first_win_rate_each)
+
+                three_month_1win = driver.find_element(By.XPATH,
+                                                       f"/html/body/div[8]/div[1]/section/div[5]"
+                                                       f"/table[1]/tbody/tr[4]/td[{first_win_rate_player + 1}]").text
+                # 情報が"-"の時は"0"として表示する
+                if three_month_1win == "-":
+                    three_month_1win = "0.0%1"
+                else:
+                    pass
+                # %より前に記載してある数字の部分のみを表示してリストに追加
+                three_month_1win = three_month_1win.split("%")[0]
+                three_month_1win = int(three_month_1win.split(".")[0])
+                race_info.append(three_month_1win)
             driver.implicitly_wait(2)
+
             second_in_rate = driver.find_element(By.XPATH,
                                                  f"/html/body/div[8]/div[1]/section/div[5]"
                                                  f"/table[1]/tbody/tr[6]/td").text
             race_info.append(second_in_rate)
             # 1~6号艇の2連対率
             for second_in_rate_player in range(1, 7):
-                second_in_rate_each = driver.find_element(By.XPATH,
-                                                          f"/html/body/div[8]/div[1]/section/div[5]"
-                                                          f"/table[1]/tbody/tr[9]/td[{second_in_rate_player + 1}]").text
-                second_in_rate_each = float(second_in_rate_each.split("%")[0])
-                race_info.append(second_in_rate_each)
-            # 逃げ率text
+                three_month_2win = driver.find_element(By.XPATH,
+                                                       f"/html/body/div[8]/div[1]/section/div[5]"
+                                                       f"/table[1]/tbody/tr[9]/td[{second_in_rate_player + 1}]").text
+                # 情報が"-"の時は"0"として表示する
+                if three_month_2win == "-":
+                    three_month_2win = "0.0%1"
+                else:
+                    pass
+                # %より前に記載してある数字の部分のみを表示してリストに追加
+                three_month_2win = three_month_2win.split("%")[0]
+                three_month_2win = int(three_month_2win.split(".")[0])
+                race_info.append(three_month_2win)
+
+            third_in_rate = driver.find_element(By.XPATH,
+                                                f"/html/body/div[8]/div[1]/section/div[5]/"
+                                                f"table[1]/tbody/tr[11]/td").text
+            race_info.append(third_in_rate)
+            for third_in_rate_player in range(1, 7):
+                three_month_3win = driver.find_element(By.XPATH,
+                                                       f"/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/"
+                                                       f"tr[14]/td[{third_in_rate_player + 1}]").text
+                # 情報が"-"の時は"0"として表示する
+                if three_month_3win == "-":
+                    three_month_3win = "0.0%1"
+                else:
+                    pass
+                # %より前に記載してある数字の部分のみを表示してリストに追加
+                three_month_3win = three_month_3win.split("%")[0]
+                three_month_3win = int(three_month_3win.split(".")[0])
+                race_info.append(three_month_3win)
+
+            # "逃げ率"というテキスト情報を取得、追加
             determination_way = driver.find_element(By.XPATH,
                                                     f"/html/body/div[8]/div[1]/section/div[5]"
                                                     f"/table[1]/tbody/tr[26]/td").text
             race_info.append(determination_way)
-            # 逃げ率
+            # 逃げ率　を取得、リストに追加していく
             escape_rate = driver.find_element(By.XPATH, f"/html/body/div[8]/div[1]/section/div[5]"
                                                         f"/table[1]/tbody/tr[29]/td[1]").text
-            # 逃し率
+            # 逃し率　を取得、リストに追加していく
             escaped_rate = driver.find_element(By.XPATH, f"/html/body/div[8]/div[1]/section/div[5]"
                                                          f"/table[1]/tbody/tr[29]/td[2]").text
-            escape_rate = float(escape_rate.split("%")[0])
-            escaped_rate = float(escaped_rate.split("%")[0])
+            escape_rate = escape_rate.split("%")[0]
+            escape_rate = int(escape_rate.split(".")[0])
+            escaped_rate = escaped_rate.split("%")[0]
+            escaped_rate = int(escaped_rate.split(".")[0])
             race_info.append(escape_rate)
             race_info.append(escaped_rate)
             driver.implicitly_wait(5)
+            # test.csvに書き込み
+            # race_info = tuple(race_info)
+            print(race_info)
 
-            csv_method(race_info)
-
-            # dbに追加
+            # >>>>>>>>データベースへ登録<<<<<<<<<
+            # DBの情報を取得
             dsn = os.environ.get('DATABASE_URL')
-            connection = psycopg2.connect(dsn)
-            cursor = connection.cursor()
+            # DBに接続（コネクションを貼る）
+            conn = psycopg2.connect(dsn)
+            cur = conn.cursor()
 
-            # レコードを登録
-            keys = ['data', 'place_name', 'race_number', 'name_1', 'name_2', 'name_3', 'name_4', 'name_5', 'name_6',
-                    'first_text', 'one_3month_1win', 'two_3month_1win', 'three_3month_1win', 'four_3month_1win',
-                    'five_3month_1win',
-                    'six_3month_1win', 'second_text', 'oen_3month_2win', 'two_3month_2win', 'three_3month_2win',
-                    'four_3month_2win',
-                    'five_3month_2win', 'six_3month_2win', 'third_text', 'one_3month_3win', 'two_3month_3win',
-                    'three_3month_3win',
-                    'four_3month_3win', 'five_3month_3win', 'six_3month_3win', 'kimarite_text', 'one_6month_escape',
-                    'one_6month_escaped']
+            # SQLを用意
+            # sql = "INSERT INTO all_race_data VALUES " \
+            #       "(%(date_)s, %(place_name)s, %(start_time)s, %(race_number)s, %(name_1)s, " \
+            #       "%(name_2)s, %(name_3)s, %(name_4)s, %(name_5)s, %(name_6)s, " \
+            #       "%(first_text)s, %(one_3month_1win)s, %(two_3month_1win)s, %(three_3month_1win)s, %(four_3month_1win)s, " \
+            #       "%(five_3month_1win)s, %(six_3month_1win)s, %(second_text)s, %(one_3month_2win)s, %(two_3month_2win)s, " \
+            #       "%(three_3month_2win)s, %(four_3month_2win)s, %(five_3month_2win)s, %(six_3month_2win)s, %(third_text)s, " \
+            #       "%(one_3month_3win)s, %(two_3month_3win)s, %(three_3month_3win)s, %(four_3month_3win)s, %(five_3month_3win)s, " \
+            #       "%(six_3month_3win)s, " \
+            #       "%(kimarite_text)s, " \
+            #       "%(one_6month_escape)s, " \
+            #       "%(two_6month_escaped)s )"
 
-            values = race_info
-            print(values)
-            # new_data = dict(zip(keys, values))
+            # keys = ["date_", "place_name", "start_time", "race_number", "name_1", \
+            #         "name_2", "name_3", "name_4", "name_5", "name_6", \
+            #         "first_text", "one_3month_1win", "two_3month_1win", "three_3month_1win", "four_3month_1win", \
+            #         "five_3month_1win", "six_3month_1win", "second_text", "one_3month_2win", "two_3month_2win", \
+            #         "three_3month_2win", "four_3month_2win", "five_3month_2win", "six_3month_2win", "third_text TEXT", \
+            #         "one_3month_3win", "two_3month_3win", "three_3month_3win", "four_3month_3win", "five_3month_3win", \
+            #         "six_3month_3win", "kimarite_text", "one_6month_escape", "two_6month_escaped"]
 
-            for key, value in zip(keys, values):
-                cursor.execute("INSERT INTO all_race_data ('" & key & "') VALUES ('" & value & "')")
+            sql = "INSERT INTO all_race_data (date_, place_name, start_time, race_number, " \
+                  "name_1, name_2, name_3, name_4, name_5, name_6, " \
+                  "first_text, one_3month_1win, two_3month_1win, three_3month_1win, " \
+                  "four_3month_1win, five_3month_1win, six_3month_1win, " \
+                  "second_text, one_3month_2win, two_3month_2win, three_3month_2win, " \
+                  "four_3month_2win, five_3month_2win, six_3month_2win, " \
+                  "third_text, one_3month_3win, two_3month_3win, three_3month_3win, " \
+                  "four_3month_3win, five_3month_3win, six_3month_3win, " \
+                  "kimarite_text, one_6month_escape, two_6month_escaped" \
+                  ") " \
+                  "VALUES(%(date_)s, %(place_name)s, %(start_time)s, %(race_number)s, " \
+                  "%(name_1)s, %(name_2)s, %(name_3)s, %(name_4)s, %(name_5)s, %(name_6)s, " \
+                  "%(first_text)s, %(one_3month_1win)s, %(two_3month_1win)s, %(three_3month_1win)s, " \
+                  "%(four_3month_1win)s, %(five_3month_1win)s, %(six_3month_1win)s, " \
+                  "%(second_text)s, %(one_3month_2win)s, %(two_3month_2win)s, %(three_3month_2win)s, " \
+                  "%(four_3month_2win)s, %(five_3month_2win)s, %(six_3month_2win)s, " \
+                  "%(third_text)s, %(one_3month_3win)s, %(two_3month_3win)s, %(three_3month_3win)s, " \
+                  "%(four_3month_3win)s, %(five_3month_3win)s, %(six_3month_3win)s, " \
+                  "%(kimarite_text)s, %(one_6month_escape)s, %(two_6month_escaped)s)" \
+ \
+            cur.execute(sql, {'date_': race_info[0], 'place_name': race_info[1], 'start_time': race_info[2],
+                              'race_number': race_info[3],
+                              'name_1': race_info[4], 'name_2': race_info[5], 'name_3': race_info[6],
+                              'name_4': race_info[7], 'name_5': race_info[8], 'name_6': race_info[9],
+                              'first_text': race_info[10],
+                              'one_3month_1win': race_info[11], 'two_3month_1win': race_info[12],
+                              'three_3month_1win': race_info[13],
+                              'four_3month_1win': race_info[14], 'five_3month_1win': race_info[15],
+                              'six_3month_1win': race_info[16],
+                              'second_text': race_info[17],
+                              'one_3month_2win': race_info[18], 'two_3month_2win': race_info[19],
+                              'three_3month_2win': race_info[20],
+                              'four_3month_2win': race_info[21], 'five_3month_2win': race_info[22],
+                              'six_3month_2win': race_info[23],
+                              'third_text': race_info[24],
+                              'one_3month_3win': race_info[25], 'two_3month_3win': race_info[26],
+                              'three_3month_3win': race_info[27],
+                              'four_3month_3win': race_info[28], 'five_3month_3win': race_info[29],
+                              'six_3month_3win': race_info[30],
+                              'kimarite_text': race_info[31], 'one_6month_escape': race_info[32],
+                              'two_6month_escaped': race_info[33]})
+            conn.commit()
+            conn.close
+            #
+            # for value in race_info:
+            #     print(value)
+            #     print(type(value))
+            #     # SQLを実行
+            #
+            #     for key in keys:
+            #         print(key)
+            #         print(type(key))
+            #         result = f"'{key}': {value}"
+            #         print(result)
+            #         cur.execute(sql, result)
+            #
+            #         # 実行状態を保存
+            #         conn.commit()
+            #         # コネクションを閉じる（）
+            #         conn.close()
 
-            cursor.execute('select * from all_race_data')
-            docs = cursor.fetchall()
-            for doc in docs:
-                print(doc)
+    driver.close()
 
-            connection.commit()
 
-            connection.close()
+# データベースの初期化
+def init_db():
+    # DBの情報を取得
+    dsn = os.environ.get('DATABASE_URL')
+    # DBに接続（コネクションを貼る）
+    conn = psycopg2.connect(dsn)
+    cur = conn.cursor()
+    # SQLを用意
+    with open('schema.sql', encoding="utf-8") as f:
+        sql = f.read()
+        # SQLを実行
+        cur.execute(sql)
+    # 実行状態を保存
+    conn.commit()
+    # コネクションを閉じる（）
+    conn.close()
 
-        driver.close()
+
+# all_race_dataテーブルを作成
+
+
+def main():
+    init_db()
+    scraping_register_data()
 
 
 if __name__ == "__main__":
