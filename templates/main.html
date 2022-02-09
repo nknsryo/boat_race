@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>BOAT RATE（ボートレート)｜購入設定</title>
+    <!-- BootstrapのCSS読み込み -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-light bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="static/img/logo02.png" alt="" height="24">
+        </a>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <h1 class="col-12"><i class="fas fa-cog"></i>購入設定</h1>
+        <p class="message col-12">{{ message }}</p>
+        <h2 class="col-12">購入レース場</h2>
+    </div>
+    <form action="" method="post">
+        <div class="row">
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="桐生" {% if ("桐生" in tracks)
+                %}checked{% endif %}>桐生</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="戸田" {% if ("戸田" in tracks)
+                %}checked{% endif %}>戸田</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="江戸川" {% if ("江戸川" in
+                tracks) %}checked{% endif %}>江戸川</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="多摩川" {% if ("多摩川" in
+                tracks) %}checked{% endif %}>多摩川</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="平和島" {% if ("平和島" in
+                tracks) %}checked{% endif %}>平和島</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="浜名湖" {% if ("浜名湖" in
+                tracks) %}checked{% endif %}>浜名湖</label>
+        </div>
+
+        <div class="row">
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="蒲郡" {% if ("蒲郡" in tracks)
+                %}checked{% endif %}>蒲郡</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="常滑" {% if ("常滑" in tracks)
+                %}checked{% endif %}>常滑</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="津" {% if ("津" in tracks)
+                %}checked{% endif %}>津</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="三国" {% if ("三国" in tracks)
+                %}checked{% endif %}>三国</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="びわこ" {% if ("びわこ" in
+                tracks) %}checked{% endif %}>びわこ</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="住之江" {% if ("住之江" in
+                tracks) %}checked{% endif %}>住之江</label>
+        </div>
+
+        <div class="row">
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="尼崎" {% if ("尼崎" in tracks)
+                %}checked{% endif %}>尼崎</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="鳴門" {% if ("鳴門" in tracks)
+                %}checked{% endif %}>鳴門</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="丸亀" {% if ("丸亀" in tracks)
+                %}checked{% endif %}>丸亀</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="児島" {% if ("児島" in tracks)
+                %}checked{% endif %}>児島</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="宮島" {% if ("宮島" in tracks)
+                %}checked{% endif %}>宮島</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="徳山" {% if ("徳山" in tracks)
+                %}checked{% endif %}>徳山</label>
+        </div>
+
+        <div class="row">
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="下関" {% if ("下関" in tracks)
+                %}checked{% endif %}>下関</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="若松" {% if ("若松" in tracks)
+                %}checked{% endif %}>若松</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="芦屋" {% if ("芦屋" in tracks)
+                %}checked{% endif %}>芦屋</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="福岡" {% if ("福岡" in tracks)
+                %}checked{% endif %}>福岡</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="唐津" {% if ("唐津" in tracks)
+                %}checked{% endif %}>唐津</label>
+            <label class="col-2"><input class="checkbox" type="checkbox" name="track" value="大村" {% if ("大村" in tracks)
+                %}checked{% endif %}>大村</label>
+        </div>
+        {{ tracks }}
+
+        <br>
+        <h2>購入条件</h2>
+        <div>
+            <ul>
+                <li><span>条件１：</span>１号艇の直近３ヶ月、１着率が<input type="text" name="rate-01" class="form-control"
+                                                          placeholder="入力してください" value="{{ rate1 }}">%の場合。
+                </li>
+                <li><span>条件２：</span>１号艇が逃げる確率が<input type="text" name="rate-02" class="form-control"
+                                                      placeholder="入力してください" value="{{ rate2 }}">%の場合。
+                </li>
+                <li><span>条件３：</span>２〜６号艇の直近３ヶ月、２連対率の１番大きい値が重複していない場合。</li>
+                <li><span>条件４：</span>２〜６号艇の直近３ヶ月、２連対率の１番大きい値が５、６号艇でない場合。</li>
+                <li><span>条件５：</span>レース時間の間が１５分以内だった場合、１号艇の直近３ヶ月、１着率が高い方。</li>
+            </ul>
+        </div>
+        {{ rate1 }}
+        {{ rate2 }}
+
+        <br>
+        <h2>掛け金</h2>
+        <div>
+            <label><input type="text" name="bet" class="form-control" placeholder="入力してください" value="{{ bet_price }}">00円</label>
+            <ul>
+                <li><span>条件１：</span>購入した１つ前のレースが負けた場合、掛け金を２倍にする。</li>
+                <li><span>条件２：</span>購入した１つ前のレースが勝った場合、掛け金を最初の設定に戻す。</li>
+            </ul>
+        </div>
+        {{ bet_price }}
+
+        <br>
+        <h2>入金金額</h2>
+
+        <div>
+            <label><input type="text" name="deposit" class="form-control" placeholder="入力してください"
+                          value="{{ deposit_price }}">00円</label>
+        </div>
+        {{ deposit_price }}
+
+
+        <!--        <h2>購入期間</h2>-->
+        <!--        <div>-->
+        <!--            <label><span>開始日：</span></label>-->
+        <!--            <label><span>終了日：</span></label>-->
+        <!--        </div>-->
+        <button type="submit" class="btn btn-success btn-lg btn-block">登録</button>
+    </form>
+</div>
+
+　　<!-- jQuery読み込み -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+
+　　<!-- Propper.js読み込み -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+
+　　<!-- BootstrapのJavascript読み込み -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

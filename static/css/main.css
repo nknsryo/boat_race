@@ -1,0 +1,59 @@
+.container {
+    color: #3e3a39;
+    font-size: 1.1rem;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.13em;
+    text-align:center;
+    margin: 30px 0px 30px 0px;
+}
+
+.message {
+    font-size: 1.3rem;
+    text-align:center;
+    color: red;
+    display: block;
+    letter-spacing: 0.13em;
+}
+h2 {
+    background-color: #dcdddd;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 8px;
+    letter-spacing: 0.13em;
+    text-align:center;
+    border-radius: 20.5px;
+    margin-bottom: 15px;
+}
+
+.checkbox {
+    margin-right:5px;
+}
+
+button {
+    margin-top: 50px;
+    text-align:center;
+    letter-spacing: 0.13em;
+}
+
+.form-control {
+    display: inline-block;
+    width: 200px;
+    margin: 0 5px;
+}
+
+.form-control::placeholder {
+  text-align: center;
+}
+
+span {
+    font-weight: bold;
+}
+
+li {
+    list-style: none;
+    height: 45px;
+}
