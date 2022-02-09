@@ -118,7 +118,7 @@ def main():
             race_info.append(place_name)
             time.sleep(2)
             driver.get(f"https://kyoteibiyori.com/race_shusso.php?"
-                       f"place_no=2&race_no={race_number}&hiduke={date()}&slider=1")
+                       f"place_no={race_place}&race_no={race_number}&hiduke={date()}&slider=1")
             driver.implicitly_wait(5)
             driver.find_element(By.XPATH, "/html/body/div[8]/div[1]/section/div[5]/div[1]/div/ul/li[2]").click()
             driver.implicitly_wait(3)
@@ -169,9 +169,6 @@ def main():
             connection = psycopg2.connect(dsn)
             cursor = connection.cursor()
 
-            # テーブルを作成
-            cursor.execute('schema.sql', encoding='utf-8_sig')
-
             # レコードを登録
             keys = ['data', 'place_name', 'race_number', 'name_1', 'name_2', 'name_3', 'name_4', 'name_5', 'name_6',
                     'first_text', 'one_3month_1win', 'two_3month_1win', 'three_3month_1win', 'four_3month_1win',
@@ -182,9 +179,13 @@ def main():
                     'three_3month_3win',
                     'four_3month_3win', 'five_3month_3win', 'six_3month_3win', 'kimarite_text', 'one_6month_escape',
                     'one_6month_escaped']
+
             values = race_info
-            new_data = dict(zip(keys, values))
-            cursor.execute("INSERT INTO all_race_data VALUES (?, ?)", new_data)
+            print(values)
+            # new_data = dict(zip(keys, values))
+
+            for key, value in zip(keys, values):
+                cursor.execute("INSERT INTO all_race_data ('" & key & "') VALUES ('" & value & "')")
 
             cursor.execute('select * from all_race_data')
             docs = cursor.fetchall()
