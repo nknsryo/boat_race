@@ -17,7 +17,7 @@ import csv
 import psycopg2 as psycopg2
 from dotenv import load_dotenv
 
-from db import add_data, init_db
+from db import init_db
 
 
 def date():
@@ -188,7 +188,7 @@ for race_place in range(1, 25):
         race_info.append(escaped_rate)
         driver.implicitly_wait(5)
         # test.csvに書き込み
-        race_info = tuple(race_info)
+        # race_info = tuple(race_info)
 
         with open("test_02.csv", 'r+') as f:
             f.truncate(0)
