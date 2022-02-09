@@ -138,6 +138,16 @@ def main():
             with open("test_02.csv", "w", encoding="utf-8_sig") as f:
                 f.write(s)
 
+            # csvファイルの加工(",","()","[]")削除、更新
+            with open("test.csv", "r", encoding="utf-8_sig") as f:
+                s = f.read()
+            s = s.replace("'", "")
+            s = s.replace("(", "")
+            s = s.replace(")", "")
+            s = s.replace("[", "")
+            s = s.replace("]", "")
+            with open("test.csv", "w", encoding="utf-8_sig") as f:
+                f.write(s)
             with open("test.csv", "a", encoding='utf_8_sig') as csv_file:
                 print(race_info, file=csv_file)
             print(race_info)
