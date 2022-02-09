@@ -16,6 +16,8 @@ import psycopg2 as psycopg2
 # noinspection PyUnresolvedReferences
 from dotenv import load_dotenv
 
+load_dotenv()
+
 
 def csv_method(race_info):
     with open("test_02.csv", 'r+') as f:
