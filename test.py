@@ -189,6 +189,7 @@ docs = cursor.fetchall()
 for doc in docs:
     print(doc)
 
+
 connection.commit()
 
 connection.close()
