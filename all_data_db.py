@@ -80,7 +80,7 @@ def main():
 
     cursor = connection.cursor()
 
-    with open('schema.sql', encoding='utf-8') as f:
+    with open('schema.sql', encoding='utf-8_sig') as f:
         cursor.execute(f.read())
 
     connection.commit()
@@ -162,8 +162,36 @@ def main():
 
             csv_method(race_info)
 
-            keys =
+            # dbに追加
+            dsn = os.environ.get('DATABASE_URL')
+            connection = psycopg2.connect(dsn)
+            cursor = connection.cursor()
+
+            # テーブルを作成
+            cursor.execute('schema.sql', encoding='utf-8_sig')
+
+            # レコードを登録
+            keys = ['data', 'place_name', 'race_number', 'name_1', 'name_2', 'name_3', 'name_4', 'name_5', 'name_6',
+                    'first_text', 'one_3month_1win', 'two_3month_1win', 'three_3month_1win', 'four_3month_1win',
+                    'five_3month_1win',
+                    'six_3month_1win', 'second_text', 'oen_3month_2win', 'two_3month_2win', 'three_3month_2win',
+                    'four_3month_2win',
+                    'five_3month_2win', 'six_3month_2win', 'third_text', 'one_3month_3win', 'two_3month_3win',
+                    'three_3month_3win',
+                    'four_3month_3win', 'five_3month_3win', 'six_3month_3win', 'kimarite_text', 'one_6month_escape',
+                    'one_6month_escaped']
             values = race_info
+            new_data = dict(zip(keys, values))
+            cursor.execute("INSERT INTO all_race_data VALUES (?, ?)", new_data)
+
+            cursor.execute('select * from all_race_data')
+            docs = cursor.fetchall()
+            for doc in docs:
+                print(doc)
+
+            connection.commit()
+
+            connection.close()
 
         driver.close()
 

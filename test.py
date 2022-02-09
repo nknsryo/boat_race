@@ -173,12 +173,22 @@ cursor = connection.cursor()
 cursor.execute('schema.sql', encoding='utf-8')
 
 # レコードを登録
-race_info
+keys = ['data', 'place_name', 'race_number', 'name_1', 'name_2', 'name_3', 'name_4', 'name_5', 'name_6', 'first_text',
+        'one_3month_1win', 'two_3month_1win', 'three_3month_1win', 'four_3month_1win', 'five_3month_1win',
+        'six_3month_1win', 'second_text', 'oen_3month_2win', 'two_3month_2win', 'three_3month_2win', 'four_3month_2win',
+        'five_3month_2win', 'six_3month_2win', 'third_text', 'one_3month_3win', 'two_3month_3win', 'three_3month_3win',
+        'four_3month_3win', 'five_3month_3win', 'six_3month_3win', 'kimarite_text', 'one_6month_escape',
+        'one_6month_escaped']
+values = race_info
+new_data = dict(zip(keys, values))
+new_data
+cursor.executemany("INSERT INTO all_race_data VALUES (?, ?)", new_data)
 
-persons = [(1, 'Steave'), (2, 'Eric'), (3, 'Mike')]
-cursor.executemany("INSERT INTO members VALUES (?, ?)", persons)
-
-cursor.execute('select * from members')
+cursor.execute('select * from all_race_data')
 docs = cursor.fetchall()
 for doc in docs:
-    print(doc)
+        print(doc)
+
+connection.commit()
+
+connection.close()
