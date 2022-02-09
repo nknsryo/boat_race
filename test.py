@@ -187,7 +187,8 @@ cursor.executemany("INSERT INTO all_race_data VALUES (?, ?)", new_data)
 cursor.execute('select * from all_race_data')
 docs = cursor.fetchall()
 for doc in docs:
-        print(doc)
+    print(doc)
+
 
 connection.commit()
 
