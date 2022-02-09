@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 def csv_method(race_info):
     with open("test_02.csv", 'r+') as f:
         f.truncate(0)
@@ -230,14 +231,87 @@ def scraping_register_data():
             conn = psycopg2.connect(dsn)
             cur = conn.cursor()
 
-            sql = "INSERT INTO all_race_data VALUES (" \
-                  "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, " \
-                  "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, " \
-                  "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, " \
-                  "%s, %s, %s, %s)"
-            cur.execute(sql, race_info)
+            # SQLを用意
+            # sql = "INSERT INTO all_race_data VALUES " \
+            #       "(%(date_)s, %(place_name)s, %(start_time)s, %(race_number)s, %(name_1)s, " \
+            #       "%(name_2)s, %(name_3)s, %(name_4)s, %(name_5)s, %(name_6)s, " \
+            #       "%(first_text)s, %(one_3month_1win)s, %(two_3month_1win)s, %(three_3month_1win)s, %(four_3month_1win)s, " \
+            #       "%(five_3month_1win)s, %(six_3month_1win)s, %(second_text)s, %(one_3month_2win)s, %(two_3month_2win)s, " \
+            #       "%(three_3month_2win)s, %(four_3month_2win)s, %(five_3month_2win)s, %(six_3month_2win)s, %(third_text)s, " \
+            #       "%(one_3month_3win)s, %(two_3month_3win)s, %(three_3month_3win)s, %(four_3month_3win)s, %(five_3month_3win)s, " \
+            #       "%(six_3month_3win)s, " \
+            #       "%(kimarite_text)s, " \
+            #       "%(one_6month_escape)s, " \
+            #       "%(two_6month_escaped)s )"
+
+            # keys = ["date_", "place_name", "start_time", "race_number", "name_1", \
+            #         "name_2", "name_3", "name_4", "name_5", "name_6", \
+            #         "first_text", "one_3month_1win", "two_3month_1win", "three_3month_1win", "four_3month_1win", \
+            #         "five_3month_1win", "six_3month_1win", "second_text", "one_3month_2win", "two_3month_2win", \
+            #         "three_3month_2win", "four_3month_2win", "five_3month_2win", "six_3month_2win", "third_text TEXT", \
+            #         "one_3month_3win", "two_3month_3win", "three_3month_3win", "four_3month_3win", "five_3month_3win", \
+            #         "six_3month_3win", "kimarite_text", "one_6month_escape", "two_6month_escaped"]
+
+            sql = "INSERT INTO all_race_data (date_, place_name, start_time, race_number, " \
+                  "name_1, name_2, name_3, name_4, name_5, name_6, " \
+                  "first_text, one_3month_1win, two_3month_1win, three_3month_1win, " \
+                  "four_3month_1win, five_3month_1win, six_3month_1win, " \
+                  "second_text, one_3month_2win, two_3month_2win, three_3month_2win, " \
+                  "four_3month_2win, five_3month_2win, six_3month_2win, " \
+                  "third_text, one_3month_3win, two_3month_3win, three_3month_3win, " \
+                  "four_3month_3win, five_3month_3win, six_3month_3win, " \
+                  "kimarite_text, one_6month_escape, two_6month_escaped" \
+                  ") " \
+                  "VALUES(%(date_)s, %(place_name)s, %(start_time)s, %(race_number)s, " \
+                  "%(name_1)s, %(name_2)s, %(name_3)s, %(name_4)s, %(name_5)s, %(name_6)s, " \
+                  "%(first_text)s, %(one_3month_1win)s, %(two_3month_1win)s, %(three_3month_1win)s, " \
+                  "%(four_3month_1win)s, %(five_3month_1win)s, %(six_3month_1win)s, " \
+                  "%(second_text)s, %(one_3month_2win)s, %(two_3month_2win)s, %(three_3month_2win)s, " \
+                  "%(four_3month_2win)s, %(five_3month_2win)s, %(six_3month_2win)s, " \
+                  "%(third_text)s, %(one_3month_3win)s, %(two_3month_3win)s, %(three_3month_3win)s, " \
+                  "%(four_3month_3win)s, %(five_3month_3win)s, %(six_3month_3win)s, " \
+                  "%(kimarite_text)s, %(one_6month_escape)s, %(two_6month_escaped)s)" \
+ \
+                    cur.execute(sql, {'date_': race_info[0], 'place_name': race_info[1], 'start_time': race_info[2],
+                                      'race_number': race_info[3],
+                                      'name_1': race_info[4], 'name_2': race_info[5], 'name_3': race_info[6],
+                                      'name_4': race_info[7], 'name_5': race_info[8], 'name_6': race_info[9],
+                                      'first_text': race_info[10],
+                                      'one_3month_1win': race_info[11], 'two_3month_1win': race_info[12],
+                                      'three_3month_1win': race_info[13],
+                                      'four_3month_1win': race_info[14], 'five_3month_1win': race_info[15],
+                                      'six_3month_1win': race_info[16],
+                                      'second_text': race_info[17],
+                                      'one_3month_2win': race_info[18], 'two_3month_2win': race_info[19],
+                                      'three_3month_2win': race_info[20],
+                                      'four_3month_2win': race_info[21], 'five_3month_2win': race_info[22],
+                                      'six_3month_2win': race_info[23],
+                                      'third_text': race_info[24],
+                                      'one_3month_3win': race_info[25], 'two_3month_3win': race_info[26],
+                                      'three_3month_3win': race_info[27],
+                                      'four_3month_3win': race_info[28], 'five_3month_3win': race_info[29],
+                                      'six_3month_3win': race_info[30],
+                                      'kimarite_text': race_info[31], 'one_6month_escape': race_info[32],
+                                      'two_6month_escaped': race_info[33]})
             conn.commit()
             conn.close
+            #
+            # for value in race_info:
+            #     print(value)
+            #     print(type(value))
+            #     # SQLを実行
+            #
+            #     for key in keys:
+            #         print(key)
+            #         print(type(key))
+            #         result = f"'{key}': {value}"
+            #         print(result)
+            #         cur.execute(sql, result)
+            #
+            #         # 実行状態を保存
+            #         conn.commit()
+            #         # コネクションを閉じる（）
+            #         conn.close()
 
     driver.close()
 
