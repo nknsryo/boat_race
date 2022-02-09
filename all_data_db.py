@@ -169,7 +169,6 @@ def main():
             connection = psycopg2.connect(dsn)
             cursor = connection.cursor()
 
-
             # レコードを登録
             keys = ['data', 'place_name', 'race_number', 'name_1', 'name_2', 'name_3', 'name_4', 'name_5', 'name_6',
                     'first_text', 'one_3month_1win', 'two_3month_1win', 'three_3month_1win', 'four_3month_1win',
@@ -182,6 +181,7 @@ def main():
                     'one_6month_escaped']
 
             values = race_info
+            print(values)
             # new_data = dict(zip(keys, values))
 
             for key, value in zip(keys, values):
