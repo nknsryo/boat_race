@@ -83,3 +83,6 @@ def add_data():
     connection.commit()
 
     connection.close()
+
+
+init_db()
