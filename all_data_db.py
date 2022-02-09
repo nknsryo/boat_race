@@ -1,6 +1,5 @@
 # noinspection PyUnresolvedReferences
 import os
-
 import time
 import datetime
 # noinspection PyUnresolvedReferences
@@ -12,15 +11,43 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 # noinspection PyUnresolvedReferences
 import csv
-
-# noinspection PyUnresolvedReferences
-import os
-
 # noinspection PyUnresolvedReferences
 import psycopg2 as psycopg2
+# noinspection PyUnresolvedReferences
 from dotenv import load_dotenv
 
-from db import scraping_data_all, add_user_column, init_db_first
+
+def csv_method(race_info):
+    with open("test_02.csv", 'r+') as f:
+        f.truncate(0)
+    with open("test_02.csv", "a", encoding='utf_8_sig') as csv_file:
+        print(race_info, file=csv_file)
+    with open("test_02.csv", "r", encoding="utf-8_sig") as f:
+        s = f.read()
+    s = s.replace("'", "")
+    s = s.replace("(", "")
+    s = s.replace(")", "")
+    s = s.replace("[", "")
+    s = s.replace("]", "")
+    # csv(累計レース)書き込み
+    with open("test_02.csv", "w", encoding="utf-8_sig") as f:
+        f.write(s)
+    # csvファイルの加工(",","()","[]")削除、更新
+    with open("test.csv", "r", encoding="utf-8_sig") as f:
+        s = f.read()
+    s = s.replace("'", "")
+    s = s.replace("(", "")
+    s = s.replace(")", "")
+    s = s.replace("[", "")
+    s = s.replace("]", "")
+    with open("test.csv", "w", encoding="utf-8_sig") as f:
+        f.write(s)
+    with open("test.csv", "a", encoding='utf_8_sig') as csv_file:
+        print(race_info, file=csv_file)
+    print(race_info)
+
+
+# noinspection PyUnresolvedReferences
 
 
 def date():
@@ -46,8 +73,20 @@ def chromedriver_options():
 def main():
     driver = webdriver.Chrome(options=chromedriver_options())
     # driver = webdriver.Chrome()
-    init_db_first()
-    scraping_data_all()
+
+    # init_dbのこと
+    dsn = os.environ.get('DATABASE_URL')
+    connection = psycopg2.connect(dsn)
+
+    cursor = connection.cursor()
+
+    with open('schema.sql', encoding='utf-8') as f:
+        cursor.execute(f.read())
+
+    connection.commit()
+
+    connection.close()
+    # ここまで
 
     # 24レース場からデータを取得してくる
     for race_place in range(1, 25):
@@ -68,7 +107,8 @@ def main():
             continue
         else:
             place_name = driver.find_element(By.XPATH,
-                                             f"/html/body/div[4]/div/section[1]/div[2]/ul/li[{race_place}]/a/div[1]").text
+                                             f"/html/body/div[4]/div/section[1]/div[2]/"
+                                             f"ul/li[{race_place}]/a/div[1]").text
             # 1~12レースの情報を回す。
         for race_number in range(1, 13):
             race_info = []
@@ -120,50 +160,12 @@ def main():
             race_info.append(escaped_rate)
             driver.implicitly_wait(5)
 
-            add_user_column()
+            csv_method(race_info)
 
-            # csv_02(1レース分)に書き込み
-            with open("test_02.csv", 'r+') as f:
-                f.truncate(0)
-            with open("test_02.csv", "a", encoding='utf_8_sig') as csv_file:
-                print(race_info, file=csv_file)
-            with open("test_02.csv", "r", encoding="utf-8_sig") as f:
-                s = f.read()
-            s = s.replace("'", "")
-            s = s.replace("(", "")
-            s = s.replace(")", "")
-            s = s.replace("[", "")
-            s = s.replace("]", "")
-            # csv(累計レース)書き込み
-            with open("test_02.csv", "w", encoding="utf-8_sig") as f:
-                f.write(s)
+            keys =
+            values = race_info
 
-            # csvファイルの加工(",","()","[]")削除、更新
-            with open("test.csv", "r", encoding="utf-8_sig") as f:
-                s = f.read()
-            s = s.replace("'", "")
-            s = s.replace("(", "")
-            s = s.replace(")", "")
-            s = s.replace("[", "")
-            s = s.replace("]", "")
-            with open("test.csv", "w", encoding="utf-8_sig") as f:
-                f.write(s)
-            with open("test.csv", "a", encoding='utf_8_sig') as csv_file:
-                print(race_info, file=csv_file)
-            print(race_info)
         driver.close()
-    # csvファイルの加工(",","()","[]")削除、更新
-    with open("test.csv", "r", encoding="utf-8_sig") as f:
-        s = f.read()
-    s = s.replace("'", "")
-    s = s.replace("(", "")
-    s = s.replace(")", "")
-    s = s.replace("[", "")
-    s = s.replace("]", "")
-    with open("test.csv", "w", encoding="utf-8_sig") as f:
-        f.write(s)
-
-    # csvデータをデータベースに反映させる
 
 
 if __name__ == "__main__":
