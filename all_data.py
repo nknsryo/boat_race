@@ -40,7 +40,7 @@ def chromedriver_options():
     pass
 
 
-load_dotenv()
+
 driver = webdriver.Chrome(options=chromedriver_options())
 
 # driver = webdriver.Chrome()
@@ -215,7 +215,26 @@ for race_place in range(1, 25):
             s = s.replace("]", "")
         with open("test.csv", "w", encoding="utf-8_sig") as f:
             f.write(s)
+        #
         print(race_info)
 driver.close()
 
 # csvデータをデータベースに反映させる
+
+
+load_dotenv()
+dsn = os.environ.get('DATABASE_URL')
+connection = psycopg2.connect(dsn)
+cursor = connection.cursor()
+with open('test.csv') as fp:
+    cursor.copy_from(fp, table='all_race_data', sep=',',
+                     columns=['data', 'place_name’,’start_time’,’race_number', 'name_1', 'name_2', 'name_3', 'name_4',
+                              'name_5', 'name_6', 'first_text', 'one_3month_1win', 'two_3month_1win',
+                              'three_3month_1win', 'four_3month_1win', 'five_3month_1win', 'six_3month_1win',
+                              'second_text', 'oen_3month_2win', 'two_3month_2win', 'three_3month_2win',
+                              'four_3month_2win', 'five_3month_2win', 'six_3month_2win', 'third_text',
+                              'one_3month_3win', 'two_3month_3win', 'three_3month_3win', 'four_3month_3win',
+                              'five_3month_3win', 'six_3month_3win', 'kimarite_text', 'one_6month_escape',
+                              'one_6month_escaped'])
+connection.commit()
+#
