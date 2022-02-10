@@ -15,40 +15,9 @@ import csv
 import psycopg2 as psycopg2
 # noinspection PyUnresolvedReferences
 from dotenv import load_dotenv
+from db import init_db
 
 load_dotenv()
-
-def csv_method(race_info):
-    with open("test_02.csv", 'r+') as f:
-        f.truncate(0)
-    with open("test_02.csv", "a", encoding='utf_8_sig') as csv_file:
-        print(race_info, file=csv_file)
-    with open("test_02.csv", "r", encoding="utf-8_sig") as f:
-        s = f.read()
-    s = s.replace("'", "")
-    s = s.replace("(", "")
-    s = s.replace(")", "")
-    s = s.replace("[", "")
-    s = s.replace("]", "")
-    # csv(累計レース)書き込み
-    with open("test_02.csv", "w", encoding="utf-8_sig") as f:
-        f.write(s)
-    # csvファイルの加工(",","()","[]")削除、更新
-    with open("test.csv", "r", encoding="utf-8_sig") as f:
-        s = f.read()
-    s = s.replace("'", "")
-    s = s.replace("(", "")
-    s = s.replace(")", "")
-    s = s.replace("[", "")
-    s = s.replace("]", "")
-    with open("test.csv", "w", encoding="utf-8_sig") as f:
-        f.write(s)
-    with open("test.csv", "a", encoding='utf_8_sig') as csv_file:
-        print(race_info, file=csv_file)
-    print(race_info)
-
-
-# noinspection PyUnresolvedReferences
 
 
 def date():
@@ -71,7 +40,7 @@ def chromedriver_options():
     pass
 
 
-def scraping_register_data():
+def get_scraping_data():
     load_dotenv()
     driver = webdriver.Chrome(options=chromedriver_options())
 
@@ -134,7 +103,7 @@ def scraping_register_data():
             first_win_rate = driver.find_element(By.XPATH,
                                                  "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
             # リストに　レース番号　を追加
-            race_info.append(f"{race_number}R")
+            race_info.append(f"{race_number}")
             # リストに選手名を追加
             for player_name in range(1, 7):
                 players_name = driver.find_element(By.XPATH,
@@ -238,32 +207,4 @@ def scraping_register_data():
             cur.execute(sql, race_info)
             conn.commit()
             conn.close
-
     driver.close()
-
-
-# データベースの初期化
-def init_db():
-    # DBの情報を取得
-    dsn = os.environ.get('DATABASE_URL')
-    # DBに接続（コネクションを貼る）
-    conn = psycopg2.connect(dsn)
-    cur = conn.cursor()
-    # SQLを用意
-    with open('schema.sql', encoding="utf-8") as f:
-        sql = f.read()
-        # SQLを実行
-        cur.execute(sql)
-    # 実行状態を保存
-    conn.commit()
-    # コネクションを閉じる（）
-    conn.close()
-
-
-def main():
-    init_db()
-    scraping_register_data()
-
-
-if __name__ == "__main__":
-    main()

@@ -18,7 +18,7 @@ import psycopg2 as psycopg2
 # noinspection PyUnresolvedReferences
 from dotenv import load_dotenv
 
-from db import init_db
+from db_ import init_db
 
 load_dotenv()
 init_db()

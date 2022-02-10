@@ -1,5 +1,3 @@
-
-
 -- もしテーブルが存在したら削除
 DROP TABlE IF EXISTS all_race_data;
 
@@ -39,15 +37,4 @@ CREATE TABLE IF NOT EXISTS all_race_data(
     kimarite_text TEXT,
     one_6month_escape INTEGER,
     two_6month_escaped INTEGER
-
 )
---
---  テストデータの挿入
---INSERT INTO
---    -- customers(name, age)とかにするとカラム指定ができる。
---    customers
---VALUES
---    ('Bob', 15),
---    ('Tom', 57),
---    ('Ken', 76)
---    ;

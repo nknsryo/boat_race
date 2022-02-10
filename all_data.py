@@ -17,7 +17,7 @@ import csv
 import psycopg2 as psycopg2
 from dotenv import load_dotenv
 
-from db import init_db
+from db_ import init_db
 
 
 def date():
