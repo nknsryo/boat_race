@@ -60,8 +60,21 @@ def buy_ticket_one_time():
     time.sleep(1)
     driver.find_element(By.NAME, "in_PassWord").send_keys(os.environ.get('ATTESTATION_PASS_1'))
     time.sleep(1)
+    
+    # 古いウィンドウのWindowハンドル取得
+    wh_before = driver.window_handles
+
     driver.find_element(By.XPATH, "/html/body/main/div/div/div/div[2]/div/div/div[2]/div/form/p/button").click()
     driver.implicitly_wait(20)
+
+    time.sleep(1)
+    # 新規Windowを開いたあとのWindowハンドル一覧を取得
+    wh_after = driver.window_handles
+    # Windowハンドル一覧の比較を行い、新規で開いたWindowのハンドルを取得
+    new_window = set(wh_after).difference(set(wh_before)).pop()
+    # 新規Windowに切り替え
+    driver.switch_to.window(new_window)
+
     driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[3]/div/p/a").click()
     driver.implicitly_wait(30)
 
