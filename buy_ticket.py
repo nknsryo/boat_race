@@ -62,6 +62,22 @@ def buy_ticket_one_time():
     time.sleep(1)
     driver.find_element(By.XPATH, "/html/body/main/div/div/div/div[2]/div/div/div[2]/div/form/p/button").click()
     driver.implicitly_wait(20)
+
+    handle_array = driver.window_handles
+    driver.switch_to.window(handle_array[-1])
+
+    # wh_before = window_handles()
+    #
+    # # 何かしらの新規ウィンドウを開くような操作を実行
+    #
+    # sleep(1)
+    # # 新規Windowを開いたあとのWindowハンドル一覧を取得
+    # wh_after = window_handles()
+    # # Windowハンドル一覧の比較を行い、新規で開いたWindowのハンドルを取得
+    # new_window = set(wh_after).difference(set(wh_before)).pop()
+    # # 新規Windowに切り替え
+    # driver.switch_to.window(new_window)
+
     driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[3]/div/p/a").click()
     driver.implicitly_wait(30)
 
