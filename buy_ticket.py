@@ -60,16 +60,12 @@ def buy_ticket_one_time():
     time.sleep(1)
     driver.find_element(By.NAME, "in_PassWord").send_keys(os.environ.get('ATTESTATION_PASS_1'))
     time.sleep(1)
-
+    
+    # 古いウィンドウのWindowハンドル取得
     wh_before = driver.window_handles
 
     driver.find_element(By.XPATH, "/html/body/main/div/div/div/div[2]/div/div/div[2]/div/form/p/button").click()
     driver.implicitly_wait(20)
-
-    # handle_array = driver.window_handles
-    # driver.switch_to.window(handle_array[-1])
-
-    # 何かしらの新規ウィンドウを開くような操作を実行
 
     time.sleep(1)
     # 新規Windowを開いたあとのWindowハンドル一覧を取得
