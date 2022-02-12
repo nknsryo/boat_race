@@ -13,6 +13,7 @@ psycopg2 = "*"
 flask = "*"
 sqlalchemy = "*"
 pandas = "*"
+now = "*"
 
 [dev-packages]
 

@@ -124,8 +124,12 @@ def scraping_register_data():
             start_time = start_time.split("締切")[1]
             start_time = start_time.split(" ")[0]
             start_time = start_time.split("\n")[0]
+            start_time = datetime.datetime.strptime(start_time, '%H:%M').time()
             # リストに　日付　を追加
-            race_info.append(date())
+            day = date()
+            day = datetime.datetime.strptime(day, '%Y%m%d').date()
+            race_info.append(day)
+            # race_info.append(date())
             # リストに　開催場　を追加
             race_info.append(place_name)
             # リストに　出走時間　を追加
