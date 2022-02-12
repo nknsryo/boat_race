@@ -49,7 +49,7 @@ driver = webdriver.Chrome(options=chromedriver_options())
 with open("test.csv", 'r+') as f:
     f.truncate(0)
 
-init_db()
+# init_db()
 
 # 24レース場からデータを取得してくる
 for race_place in range(1, 25):
