@@ -134,15 +134,20 @@ def scraping_register_data():
             first_win_rate = driver.find_element(By.XPATH,
                                                  "/html/body/div[8]/div[1]/section/div[5]/table[1]/tbody/tr[1]/td").text
             # リストに　レース番号　を追加
-            race_info.append(f"{race_number}R")
+            race_info.append(f"{race_number}")
             # リストに選手名を追加
             for player_name in range(1, 7):
                 players_name = driver.find_element(By.XPATH,
                                                    f"/html/body/div[8]/div[1]/section/div[3]/div[2]/table/tbody/"
                                                    f"tr[3]/td[{player_name}]").text
-                players_name_1 = players_name.split("\n")[0]
-                players_name_2 = players_name.split("\n")[1]
-                players_name = f"{players_name_1} {players_name_2}"
+
+                if "\n" in players_name:
+                    players_name_1 = players_name.split("\n")[0]
+                    players_name_2 = players_name.split("\n")[1]
+                    players_name = f"{players_name_1} {players_name_2}"
+                else:
+                    players_name = players_name
+
                 race_info.append(players_name)
 
             # リストに　"1着率"　という文字を追加
