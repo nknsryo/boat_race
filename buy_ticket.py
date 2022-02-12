@@ -23,6 +23,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
 
+
 def chromedriver_options():
     # オプション設定
     options = webdriver.ChromeOptions()
@@ -62,6 +63,7 @@ def buy_ticket_one_time():
     # ログイン情報入力画面
     driver.get("https://www.boatrace.jp/owpc/pc/login?authAfterUrl=/pc/race/pay%3FvoteTagId%3DcommonHead")
     driver.implicitly_wait(5)
+    # 個人情報を入力
     driver.find_element(By.NAME, "in_KanyusyaNo").send_keys(os.environ.get('USER_NUMBER_1'))
     driver.find_element(By.NAME, "in_AnsyoNo").send_keys(os.environ.get('PASSWORD_1'))
     driver.find_element(By.NAME, "in_PassWord").send_keys(os.environ.get('ATTESTATION_PASS_1'))
@@ -69,18 +71,17 @@ def buy_ticket_one_time():
 
     driver.find_element(By.XPATH, "/html/body/main/div/div/div/div[2]/div/div/div[2]/div/form/p/button").click()
     driver.implicitly_wait(5)
-    driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[3]/div/p/a").click()
-    
+
     WebDriverWait(driver, 15).until(lambda d: len(d.window_handles) > 1)
     driver.switch_to.window(driver.window_handles[1])
 
-    time.sleep(1)
     # 入金メソッド
     # デポジット額取得
     deposit = driver.find_element(By.XPATH, f"/html/body/div[1]/header/section[3]/div/p[2]/strong").text
-    time.sleep(1)
+    deposit = deposit.replace(",", "")
+    time.sleep(6)
     if int(1000) >= int(deposit) < 入力を受け取る掛け金額 * 100:
-        # 少なければ追加入金
+        # 少なければ追加入金z
         driver.find_element(By.XPATH, "/html/body/div[1]/header/section[1]/div/nav/ul/li[1]/a/span").click()
         time.sleep(1)
         driver.find_element(By.XPATH, "/html/body/div[1]/header/section[1]/div/nav/ul/li[1]/ul/li[1]").click()
