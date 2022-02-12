@@ -3,9 +3,9 @@ DROP TABlE IF EXISTS all_race_data;
 
 -- もしテーブルがなかったら作成  customers--テーブル名
 CREATE TABLE IF NOT EXISTS all_race_data(
-    date_ TEXT,
+    date_ DATE,
     place_name TEXT,
-    start_time TEXT,
+    start_time TIME,
     race_number TEXT,
     name_1 TEXT,
     name_2 TEXT,

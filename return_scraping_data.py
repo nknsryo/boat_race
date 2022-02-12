@@ -29,12 +29,18 @@ def return_scraping_data():
 
     # sql = "SELECT * FROM all_race_data WHERE place_name = 福岡";
     # cur.execute(sql)
+    race = all_user_data()
+    rate1 = race["user_rate1"]
+    rate2 = race["user_rate2"]
+    print(rate1)
+    print(rate2)
 
     sql = "SELECT place_name, race_number, start_time ,two_3month_2win, three_3month_2win, four_3month_2win " \
           "FROM all_race_data " \
-          "WHERE one_3month_1win >= 80 AND one_6month_escape >= 50 " \
+          f"WHERE one_3month_1win >= {rate1} AND one_6month_escape >= {rate2} " \
           "AND GREATEST(two_3month_2win, three_3month_2win, four_3month_2win) > GREATEST(five_3month_2win,six_3month_2win) " \
-          "AND NOT two_3month_2win = three_3month_2win AND NOT two_3month_2win = four_3month_2win AND NOT three_3month_2win = four_3month_2win;"
+          "AND NOT two_3month_2win = three_3month_2win AND NOT two_3month_2win = four_3month_2win AND NOT three_3month_2win = four_3month_2win" \
+          "ORDER BY start_time ASC;"
     cur.execute(sql)
     buy_race_data = cur.fetchall()
     conn.commit()
@@ -57,7 +63,7 @@ def return_scraping_data():
         else:
             pass
 
-        race = all_user_data()
+        # race = all_user_data()
         race_place = race["user_race_place"]
         bet = race["user_bet"]
         deposit = race["user_deposit"]
