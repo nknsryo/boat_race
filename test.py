@@ -6,6 +6,7 @@ import time
 import datetime
 # noinspection PyUnresolvedReferences
 import chromedriver_binary
+import schedule as schedule
 from selenium import webdriver
 # noinspection PyUnresolvedReferences
 from selenium.webdriver.common.by import By
@@ -22,6 +23,10 @@ from selenium import webdriver
 # noinspection PyUnresolvedReferences
 from selenium.webdriver.support.ui import WebDriverWait
 
+from buy_ticket import buy_ticket_one_time
+
+from datetime import date, timedelta
+
 
 def chromedriver_options():
     # オプション設定
@@ -33,51 +38,33 @@ def chromedriver_options():
     pass
 
 
-#
-# driver = webdriver.Chrome(options=chromedriver_options())
-#
-# load_dotenv()
-#
-#
-# driver = webdriver.Chrome()
+# 定期購入>>>時間の15分前
+
+# buy_today_tickets
+# buy = 変数持ってくる
+# 仮
+buy = [('桐生', '12', '20:45', '2連単', 1, 4, 1, 10), ('戸田', '2', '11:19', '2連単', 1, 2, 1, 10),
+       ('江戸川', '11', '15:47', '2連単', 1, 2, 1, 10).......]
+for one_race_buy in range(0, len(buy)):
+
+    入力を受け取る開催場名 = buy[one_race_buy][0]
+    入力を受け取るレース番号 = buy[one_race_buy][1]
+    入力を受け取るレース時間 = buy[one_race_buy][2] + datetime.timedelta(minutes=-15)
+    入力を受け取る賭け式 = buy[one_race_buy][3]
+    入力を受け取る1着の艇 = buy[one_race_buy][4]
+    入力を受け取る2着の艇 = buy[one_race_buy][5]
+    入力を受け取る掛け金額 = buy[one_race_buy][6]
+    入金金額 = buy[one_race_buy][7]
+
+    schedule.every().day.at(入力を受け取るレース時間).do(buy_ticket_one_time())
+    while True:
+        schedule.run_pending()
+        sleep(1)
+
+# 　時間で購入するメソッド　>>>>>buy_ticket_one_time()を回すためのもの
 
 
-driver = webdriver.Chrome(options=chromedriver_options())
-
-# driver = webdriver.Chrome()
-load_dotenv()
-
-# 掛け方
-入力を受け取る開催場名 = "蒲郡"
-入力を受け取るレース番号 = 12
-入力を受け取る賭け式 = "2連単"
-入力を受け取る1着の艇 = 1
-入力を受け取る2着の艇 = 3
-入力を受け取る3着の艇 = 2
-入力を受け取る掛け金額 = 1
-
-place_list = ["桐生", "戸田", "江戸川", "平和島", "多摩川", "浜名湖", "蒲郡", "常滑", "津", "三国", "びわこ", "住之江", "尼崎", "鳴門", "丸亀", "児島",
-              "宮島", "徳山", "下関", "若松", "芦屋", "福岡", "唐津", "大村"]
-
-# ログイン情報入力画面
-handle_array = driver.window_handles
-driver.switch_to.window(handle_array[0])
-
-print(handle_array[0])
-
-driver.get("https://www.boatrace.jp/owpc/pc/login?authAfterUrl=/pc/race/pay%3FvoteTagId%3DcommonHead")
-driver.implicitly_wait(5)
-driver.find_element(By.NAME, "in_KanyusyaNo").send_keys(os.environ.get('USER_NUMBER_1'))
-driver.find_element(By.NAME, "in_AnsyoNo").send_keys(os.environ.get('PASSWORD_1'))
-driver.find_element(By.NAME, "in_PassWord").send_keys(os.environ.get('ATTESTATION_PASS_1'))
-time.sleep(1)
-
-driver.find_element(By.XPATH, "/html/body/main/div/div/div/div[2]/div/div/div[2]/div/form/p/button").click()
-
-WebDriverWait(driver, 15).until(lambda d: len(d.window_handles) > 1)
-driver.switch_to.window(driver.window_handles[1])
-
-deposit = driver.find_element(By.XPATH, f"/html/body/div[1]/header/section[3]/div/p[2]/strong").text
-print(deposit)
-
-driver.close()
+# 全レースの締切15分後に結果データを取得する
+# 本日の払戻金一覧のページ
+driver.get(f"https://www.boatrace.jp/owpc/pc/race/pay?hd={date()}")
+time.sleep(3)
