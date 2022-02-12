@@ -40,7 +40,6 @@ def chromedriver_options():
     pass
 
 
-
 driver = webdriver.Chrome(options=chromedriver_options())
 
 # driver = webdriver.Chrome()
@@ -48,8 +47,7 @@ driver = webdriver.Chrome(options=chromedriver_options())
 # test.csvのフォルダ内を空にする
 with open("test.csv", 'r+') as f:
     f.truncate(0)
-
-init_db()
+init_db
 
 # 24レース場からデータを取得してくる
 for race_place in range(1, 25):
@@ -108,9 +106,12 @@ for race_place in range(1, 25):
             players_name = driver.find_element(By.XPATH,
                                                f"/html/body/div[8]/div[1]/section/div[3]/div[2]/table/tbody/"
                                                f"tr[3]/td[{player_name}]").text
-            players_name_1 = players_name.split("\n")[0]
-            players_name_2 = players_name.split("\n")[1]
-            players_name = f"{players_name_1} {players_name_2}"
+            if "\n" in players_name:
+                players_name = players_name
+            else:
+                players_name_1 = players_name.split("\n")[0]
+                players_name_2 = players_name.split("\n")[1]
+                players_name = f"{players_name_1} {players_name_2}"
             race_info.append(players_name)
 
         # リストに　"1着率"　という文字を追加
