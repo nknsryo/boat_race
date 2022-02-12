@@ -13,11 +13,8 @@ psycopg2 = "*"
 flask = "*"
 sqlalchemy = "*"
 pandas = "*"
-<<<<<<< kawada
 now = "*"
-=======
 schedule = "*"
->>>>>>> main
 
 [dev-packages]
 
