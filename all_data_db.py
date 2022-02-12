@@ -140,14 +140,12 @@ def scraping_register_data():
                 players_name = driver.find_element(By.XPATH,
                                                    f"/html/body/div[8]/div[1]/section/div[3]/div[2]/table/tbody/"
                                                    f"tr[3]/td[{player_name}]").text
-
                 if "\n" in players_name:
                     players_name_1 = players_name.split("\n")[0]
                     players_name_2 = players_name.split("\n")[1]
                     players_name = f"{players_name_1} {players_name_2}"
                 else:
                     players_name = players_name
-
                 race_info.append(players_name)
 
             # リストに　"1着率"　という文字を追加
