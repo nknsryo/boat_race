@@ -14,6 +14,9 @@ import psycopg2 as psycopg2
 # noinspection PyUnresolvedReferences
 from dotenv import load_dotenv
 
+import user_data
+from user_data import all_user_data
+
 load_dotenv()
 
 
@@ -37,10 +40,12 @@ def return_scraping_data():
     conn.commit()
     conn.close()
 
+
     buy = []
     for i in range(0, len(buy_race_data)):
         place_name = buy_race_data[i][0]
         race_number = buy_race_data[i][1]
+        start_time = buy_race_data[i][2]
         ticket_type = "2連単"
         first＿arrival = 1
 
@@ -52,18 +57,20 @@ def return_scraping_data():
         else:
             pass
 
-        bet = 1
-        choice_place = ["鳴門", "福岡"]
+        race = all_user_data()
+        race_place = race["user_race_place"]
+        bet = race["user_bet"]
+        deposit = race["user_deposit"]
 
-        for x in choice_place:
+        for x in race_place:
             if place_name == x:
-                buy.append((place_name, race_number, ticket_type, first＿arrival, second＿arrival, bet))
-            else:
-                pass
+                buy.append(
+                    (place_name, race_number, start_time, ticket_type, first＿arrival, second＿arrival, bet, deposit))
+
         print(
-            f"レース場：{place_name} ｜ レース番号： {race_number} ｜ チケットタイプ： {ticket_type} ｜ １着：{first＿arrival} ｜ ２着：{second＿arrival} ｜ 掛け金：{bet}")
+            f"出走時間：{start_time} ｜ レース場：{place_name} ｜ レース番号： {race_number} ｜ チケットタイプ： {ticket_type} ｜ １着：{first＿arrival} ｜ ２着：{second＿arrival} ｜ 掛け金：{bet} ｜ 入金：{deposit}")
     print(buy)
-    return buy_race_data
+    return buy
 
 
 if __name__ == '__main__':

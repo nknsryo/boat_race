@@ -41,6 +41,7 @@ def create_user_data(user_data_lists):
 
 
 # 全てのデーターを引っ張ってきて表示させる
+
 def all_user_data():
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
@@ -56,22 +57,26 @@ def all_user_data():
     user_race_place = users[0][0]
     user_race_place = user_race_place.replace("{", "")
     user_race_place = user_race_place.replace("}", "")
-    print(user_race_place.split(','))
-
+    user_race_place = user_race_place.split(',')
+    # print(user_race_place)
     # ユーザーが入力したレート1情報
     user_rate1 = users[0][1]
-    print(user_rate1)
-
+    # print(user_rate1)
     # ユーザーが入力したレート2情報
     user_rate2 = users[0][2]
-    print(user_rate2)
+    # print(user_rate2)
 
     # ユーザーが入力した掛け金情報
     user_bet = users[0][3]
-    print(user_bet)
+    # print(user_bet)
 
     # ユーザーが入力した入金情報
     user_deposit = users[0][4]
-    print(user_deposit)
+    # print(user_deposit)
 
-    return users
+    return {
+        "user_race_place": user_race_place,
+        "user_rate1": user_rate1,
+        "user_rate2": user_rate2,
+        "user_bet": user_bet,
+        "user_deposit": user_deposit}
