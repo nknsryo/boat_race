@@ -79,3 +79,7 @@ li {
 .condition {
     margin-bottom: -20px;
 }
+
+input{
+    text-align: right;
+}
