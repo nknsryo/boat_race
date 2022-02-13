@@ -13,7 +13,6 @@ def get_condition_info():
 
 @app.route("/tickets", methods=["GET"])
 def get_tickets_info():
-    return_scraping_data()
     buy_tickets = return_scraping_data()
     return render_template("tickets.html", buy_tickets=buy_tickets)
 
@@ -33,10 +32,6 @@ def post_condition_info():
     return render_template("main.html", tracks=tracks, rate1=rate1, rate2=rate2, bet_price=bet_price,
                            deposit_price=deposit_price, message=message)
 
-
-# @app.route("/tickets", methods=["POST"])
-# def post_tickets_info():
-# return render_template("tickets.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
