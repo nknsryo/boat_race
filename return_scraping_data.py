@@ -32,15 +32,15 @@ def return_scraping_data():
     race = all_user_data()
     rate1 = race["user_rate1"]
     rate2 = race["user_rate2"]
-    print(rate1)
-    print(rate2)
+    # print(rate1)
+    # print(rate2)
 
     sql = "SELECT place_name, race_number, start_time ,two_3month_2win, three_3month_2win, four_3month_2win " \
           "FROM all_race_data " \
           f"WHERE one_3month_1win >= {rate1} AND one_6month_escape >= {rate2} " \
           "AND GREATEST(two_3month_2win, three_3month_2win, four_3month_2win) > GREATEST(five_3month_2win,six_3month_2win) " \
           "AND NOT two_3month_2win = three_3month_2win AND NOT two_3month_2win = four_3month_2win AND NOT three_3month_2win = four_3month_2win " \
-          "ORDER BY start_time ASC;"
+          " ORDER BY start_time ASC;"
     cur.execute(sql)
     buy_race_data = cur.fetchall()
     conn.commit()
@@ -72,8 +72,8 @@ def return_scraping_data():
                 buy_tickets.append(
                     (place_name, race_number, start_time, ticket_type, first＿arrival, second＿arrival, bet, deposit))
 
-        print(
-            f"出走時間：{start_time} ｜ レース場：{place_name} ｜ レース番号： {race_number} ｜ チケットタイプ： {ticket_type} ｜ １着：{first＿arrival} ｜ ２着：{second＿arrival} ｜ 掛け金：{bet} ｜ 入金：{deposit}")
+    #     print(
+    #         f"出走時間：{start_time} ｜ レース場：{place_name} ｜ レース番号： {race_number} ｜ チケットタイプ： {ticket_type} ｜ １着：{first＿arrival} ｜ ２着：{second＿arrival} ｜ 掛け金：{bet} ｜ 入金：{deposit}")
     print(buy_tickets)
     return buy_tickets
 
