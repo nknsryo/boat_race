@@ -37,13 +37,20 @@ def chromedriver_options():
     pass
 
 
+def now_time():
+    dt_now = datetime.datetime.now()
+    hour = str(dt_now.hour).zfill(2)
+    minutes = str(dt_now.minute).zfill(2)
+    now_date = f"{hour}{minutes}00"
+    return now_date
+    pass
+
+
 def buy_ticket_one_time():
     # driver = webdriver.Chrome(options=chromedriver_options())
     driver = webdriver.Chrome()
     load_dotenv()
-    for buy_tickets_all in range(0, len(buy_tickets)):
-        print(buy_tickets[buy_tickets_all][2])
-        if f"{(buy_tickets[buy_tickets_all][2]).replace()}" = <
+
     for one_race_buy_1 in range(0, len(buy_tickets)):
 
         入力を受け取るレース時間 = datetime.datetime.combine(datetime.datetime.now(),
@@ -60,7 +67,8 @@ def buy_ticket_one_time():
         入力を受け取る2着の艇 = buy_tickets[one_race_buy_1][5]
         入力を受け取る掛け金額 = buy_tickets[one_race_buy_1][6]
         入金金額 = buy_tickets[one_race_buy_1][7]
-
+        if int((f"{入力を受け取るレース時間}").replace(":", "")) < int(now_time()):
+            continue
         # print(入力を受け取るレース時間)
         # ログイン情報入力画面
         driver.get("https://www.boatrace.jp/owpc/pc/login?authAfterUrl=/pc/race/pay%3FvoteTagId%3DcommonHead")
@@ -219,8 +227,6 @@ def buy_ticket_one_time():
 # driver = webdriver.Chrome()
 
 
-buy_tickets = return_scraping_data()
-
 # for one_race_buy_1 in range(0, len(buy_tickets)):
 #
 #     入力を受け取る開催場名 = buy_tickets[one_race_buy_1][0]
@@ -239,5 +245,5 @@ buy_tickets = return_scraping_data()
 #         sleep(1)
 #
 
-
+buy_tickets = return_scraping_data()
 buy_ticket_one_time()
