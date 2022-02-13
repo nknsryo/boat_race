@@ -74,7 +74,7 @@ def return_scraping_data():
 
     #     print(
     #         f"出走時間：{start_time} ｜ レース場：{place_name} ｜ レース番号： {race_number} ｜ チケットタイプ： {ticket_type} ｜ １着：{first＿arrival} ｜ ２着：{second＿arrival} ｜ 掛け金：{bet} ｜ 入金：{deposit}")
-    # print(buy_tickets)
+    print(buy_tickets)
     return buy_tickets
 
 
