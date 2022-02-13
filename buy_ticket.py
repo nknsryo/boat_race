@@ -1,3 +1,4 @@
+# from datetime import *
 # noinspection PyUnresolvedReferences
 import os
 # noinspection PyUnresolvedReferences
@@ -25,6 +26,7 @@ from return_scraping_data import return_scraping_data
 
 import datetime
 
+
 def chromedriver_options():
     # オプション設定
     options = webdriver.ChromeOptions()
@@ -39,17 +41,26 @@ def buy_ticket_one_time():
     # driver = webdriver.Chrome(options=chromedriver_options())
     driver = webdriver.Chrome()
     load_dotenv()
+    for buy_tickets_all in range(0, len(buy_tickets)):
+        print(buy_tickets[buy_tickets_all][2])
+        if f"{(buy_tickets[buy_tickets_all][2]).replace()}" = <
     for one_race_buy_1 in range(0, len(buy_tickets)):
+
+        入力を受け取るレース時間 = datetime.datetime.combine(datetime.datetime.now(),
+                                                 buy_tickets[one_race_buy_1][2]) - datetime.timedelta(minutes=15)
+        入力を受け取るレース時間 = f"{入力を受け取るレース時間}"
+        入力を受け取るレース時間 = 入力を受け取るレース時間.split(" ")
+        入力を受け取るレース時間 = 入力を受け取るレース時間[1]
+        入力を受け取るレース時間 = datetime.datetime.strptime(入力を受け取るレース時間, "%H:%M:%S").time()
+
         入力を受け取る開催場名 = buy_tickets[one_race_buy_1][0]
         入力を受け取るレース番号 = buy_tickets[one_race_buy_1][1]
-
-        入力を受け取るレース時間 = buy_tickets[one_race_buy_1][2] + datetime.timedelta(minutes=-15)
-        print(入力を受け取るレース時間)
         入力を受け取る賭け式 = buy_tickets[one_race_buy_1][3]
         入力を受け取る1着の艇 = buy_tickets[one_race_buy_1][4]
         入力を受け取る2着の艇 = buy_tickets[one_race_buy_1][5]
         入力を受け取る掛け金額 = buy_tickets[one_race_buy_1][6]
         入金金額 = buy_tickets[one_race_buy_1][7]
+
         # print(入力を受け取るレース時間)
         # ログイン情報入力画面
         driver.get("https://www.boatrace.jp/owpc/pc/login?authAfterUrl=/pc/race/pay%3FvoteTagId%3DcommonHead")
