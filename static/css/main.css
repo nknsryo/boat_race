@@ -8,7 +8,7 @@ h1 {
     font-weight: bold;
     letter-spacing: 0.13em;
     text-align:center;
-    margin: 30px 0px 30px 0px;
+    margin: 50px 0px 30px 0px;
 }
 
 .message {
@@ -46,7 +46,7 @@ button {
 }
 
 .form-control::placeholder {
-  text-align: center;
+    text-align: center;
 }
 
 span {
@@ -56,4 +56,26 @@ span {
 li {
     list-style: none;
     height: 45px;
+}
+
+.input-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.check{
+    width: 80%;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.input-form {
+    margin-bottom: 15px;
+}
+
+.condition {
+    margin-bottom: -20px;
 }

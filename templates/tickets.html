@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>BOAT RATE（ボートレート)｜購入チケット一覧</title>
+    <!-- BootstrapのCSS読み込み -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-light bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/main">
+            <img src="static/img/logo02.png" alt="" height="24">
+            <a href="/tickets" class="btn btn-primary">購入チケット一覧</a>
+        </a>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <h1 class="col-12"><i class="fas fa-check-circle"></i>購入チケット一覧</h1>
+    </div>
+    <form action="" method="get">
+        <h2>入金金額：{{ buy_tickets[0][7] * 1000 }}円</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col-1">出走日</th>
+                <th scope="col-1">出走時間</th>
+                <th scope="col-1">レース場</th>
+                <th scope="col-1">レース番号</th>
+                <th scope="col-1">賭け式</th>
+                <th scope="col-1">１着</th>
+                <th scope="col-1">２着</th>
+                <th scope="col-1">賭け金</th>
+            </tr>
+            </thead>
+            {% for i in range(0, buy_tickets | length) %}
+            <tbody>
+            <tr>
+                <td>{{ buy_tickets[i][8] }}</td>
+                <td>{{ buy_tickets[i][2] }}</td>
+                <td>{{ buy_tickets[i][0] }}</td>
+                <td>{{ buy_tickets[i][1] }}R</td>
+                <td>{{ buy_tickets[i][3] }}</td>
+                <td>{{ buy_tickets[i][4] }}号艇</td>
+                <td>{{ buy_tickets[i][5] }}号艇</td>
+                <td>{{ buy_tickets[i][6] * 100}}円</td>
+            </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        {{ tracks }}
+    </form>
+</div>
+
+　　<!-- jQuery読み込み -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+
+　　<!-- Propper.js読み込み -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+
+　　<!-- BootstrapのJavascript読み込み -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
