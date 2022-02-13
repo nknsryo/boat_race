@@ -43,8 +43,7 @@ def chromedriver_options():
 # buy_today_tickets
 # buy = 変数持ってくる
 # 仮
-buy = [('桐生', '12', '20:45', '2連単', 1, 4, 1, 10), ('戸田', '2', '11:19', '2連単', 1, 2, 1, 10),
-       ('江戸川', '11', '15:47', '2連単', 1, 2, 1, 10).......]
+
 for one_race_buy in range(0, len(buy)):
 
     入力を受け取る開催場名 = buy[one_race_buy][0]

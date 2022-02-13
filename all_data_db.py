@@ -73,9 +73,9 @@ def chromedriver_options():
 
 def scraping_register_data():
     load_dotenv()
-    driver = webdriver.Chrome(options=chromedriver_options())
+    # driver = webdriver.Chrome(options=chromedriver_options())
 
-    # driver = webdriver.Chrome()
+    driver = webdriver.Chrome()
 
     # test.csvのフォルダ内を空にする
     with open("test.csv", 'r+') as f:
