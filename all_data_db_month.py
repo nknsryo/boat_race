@@ -167,7 +167,7 @@ def scraping_register_data():
                         race_info.append(players_name)
 
                     # リストに　"1着率"　という文字を追加
-                    race_info.append(first_win_rate)
+                    race_info.append(F"3ヶ月{first_win_rate}")
                     # 1~6号艇の1着率を取ってくる
                     for first_win_rate_player in range(1, 7):
 
