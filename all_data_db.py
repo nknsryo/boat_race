@@ -45,7 +45,7 @@ def csv_method(race_info):
         f.write(s)
     with open("test.csv", "a", encoding='utf_8_sig') as csv_file:
         print(race_info, file=csv_file)
-    print(race_info)
+    # print(race_info)
 
 
 # noinspection PyUnresolvedReferences
@@ -73,9 +73,9 @@ def chromedriver_options():
 
 def scraping_register_data():
     load_dotenv()
-    # driver = webdriver.Chrome(options=chromedriver_options())
+    driver = webdriver.Chrome(options=chromedriver_options())
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
 
     # test.csvのフォルダ内を空にする
     with open("test.csv", 'r+') as f:
@@ -227,6 +227,7 @@ def scraping_register_data():
             race_info.append(escaped_rate)
             driver.implicitly_wait(5)
             # test.csvに書き込み
+            csv_method(race_info)
             # race_info = tuple(race_info)
             print(race_info)
 

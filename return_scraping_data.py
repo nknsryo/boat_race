@@ -72,7 +72,8 @@ def return_scraping_data():
                     (place_name, race_number, start_time, ticket_type, first＿arrival, second＿arrival, bet, deposit,
                      date))
 
-        # print(f"日付：{date} ｜ 出走時間：{start_time} ｜ レース場：{place_name} ｜ レース番号： {race_number} ｜ チケットタイプ： {ticket_type} ｜ １着：{first＿arrival} ｜ ２着：{second＿arrival} ｜ 掛け金：{bet} ｜ 入金：{deposit}")
+        print(
+            f"日付：{date} ｜ 出走時間：{start_time} ｜ レース場：{place_name} ｜ レース番号： {race_number} ｜ チケットタイプ： {ticket_type} ｜ １着：{first＿arrival} ｜ ２着：{second＿arrival} ｜ 掛け金：{bet} ｜ 入金：{deposit}")
     return buy_tickets
 
 
