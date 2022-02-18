@@ -74,6 +74,9 @@ def return_scraping_data():
 
         print(
             f"日付：{date} ｜ 出走時間：{start_time} ｜ レース場：{place_name} ｜ レース番号： {race_number} ｜ チケットタイプ： {ticket_type} ｜ １着：{first＿arrival} ｜ ２着：{second＿arrival} ｜ 掛け金：{bet} ｜ 入金：{deposit}")
+        scraping_data_result = (
+        date, start_time, place_name, race_number, ticket_type, first＿arrival, second＿arrival, bet, deposit)
+        print(scraping_data_result)
     return buy_tickets
 
 

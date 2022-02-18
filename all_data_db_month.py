@@ -86,9 +86,9 @@ def scraping_register_data():
 
     init_db()
 
-    race_year = 2021
+    race_year = 2022
     # 1年間のデータ取得
-    for race_month in range(1, 13):
+    for race_month in range(1, 3):
         days = calendar.monthrange(race_year, race_month)[1]
         # 24レース場からデータを取得してくる
         for race_day in range(1, days + 1):
@@ -233,8 +233,14 @@ def scraping_register_data():
                     # 逃し率　を取得、リストに追加していく
                     escaped_rate = driver.find_element(By.XPATH, f"/html/body/div[8]/div[1]/section/div[5]"
                                                                  f"/table[1]/tbody/tr[29]/td[2]").text
+
+                    if escape_rate == "-":
+                        escape_rate = "0.0%1"
+                    if escaped_rate == "-":
+                        escaped_rate = "0.0%1"
                     escape_rate = escape_rate.split("%")[0]
                     escape_rate = int(escape_rate.split(".")[0])
+
                     escaped_rate = escaped_rate.split("%")[0]
                     escaped_rate = int(escaped_rate.split(".")[0])
                     race_info.append(escape_rate)
